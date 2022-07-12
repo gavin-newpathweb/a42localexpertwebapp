@@ -737,7 +737,7 @@ if(currentStep ===4 ){
             </div>
             <div style={{'height':'800px','overflow':'scroll'}}>
             {items.map((item, index) => (
-            <div key={index} className="ser_provider">
+            <div key={index} className={!showDiv[index] ? "ser_provider" : "ser_provider active"}>
                 {/* <span className="tick2"></span> */}
                 <span className="ser_avatar" style={{'background': 'url('+srImage+')'}}></span>
                 <div className="ser_content">
