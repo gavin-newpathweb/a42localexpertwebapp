@@ -275,8 +275,13 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
         // make final api call here
         setIsLoaded(true);
         const saveresp = await savewebappdata(JSON.stringify(window.$payload));
+        console.log(saveresp);
         if(saveresp.error){
             setIsLoaded(false);
+            alert(saveresp.error);
+        }else if(!saveresp.data.status){
+            setIsLoaded(false);
+            alert('Something went wrong! please try again');
         }else{
             setIsLoaded(false);
             gotoNext(step);
@@ -322,6 +327,10 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
             // gotoNext(5); 
         }
     }
+
+
+    let sdate = new Date(servicedate);
+    sdate =  sdate.getDate()+'/'+((sdate.getMonth()+1) < 10 ? '0'+(sdate.getMonth()+1) : (sdate.getMonth()+1))+'/'+sdate.getFullYear();
 
     if(currentStep === 1){
       
@@ -392,8 +401,7 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
    
 }
 if(currentStep === 2){
-    let sdate = new Date(servicedate);
-    sdate =  sdate.getDate()+'/'+((sdate.getMonth()+1) < 10 ? '0'+(sdate.getMonth()+1) : (sdate.getMonth()+1))+'/'+sdate.getFullYear();
+    
 
     if (sverror) {
         
@@ -522,6 +530,7 @@ if(currentStep === 2){
 
 if(currentStep === 3){
 
+    
 
 
     return(
@@ -538,7 +547,7 @@ if(currentStep === 3){
                 <div className="quote-box">
                     <h2>Your quote so far...</h2>
                     <div className="quote-row"><label>Postcode</label><span>{postcode}</span></div>
-                    <div className="quote-row"><label>Service date</label><span>{servicedate}</span></div>
+                    <div className="quote-row"><label>Service date</label><span>{sdate}</span></div>
                     <div className="quote-row"><label>Service type</label><span>{service}</span></div>
                 </div>		
             </div>
@@ -625,7 +634,7 @@ if(currentStep === 3){
 }
 
 if(currentStep ===4 ){
-
+   
     if (srerror) {
         
         return (
@@ -642,7 +651,7 @@ if(currentStep ===4 ){
                 <div className="quote-box">
                     <h2>Your quote so far...</h2>
                     <div className="quote-row"><label>Postcode</label><span>{postcode}</span></div>
-                    <div className="quote-row"><label>Service date</label><span>{servicedate}</span></div>
+                    <div className="quote-row"><label>Service date</label><span>{sdate}</span></div>
                     <div className="quote-row"><label>Service type</label><span>{service}</span></div>
                 </div>		
             </div>
@@ -678,7 +687,7 @@ if(currentStep ===4 ){
                 <div className="quote-box">
                     <h2>Your quote so far...</h2>
                     <div className="quote-row"><label>Postcode</label><span>{postcode}</span></div>
-                    <div className="quote-row"><label>Service date</label><span>{servicedate}</span></div>
+                    <div className="quote-row"><label>Service date</label><span>{sdate}</span></div>
                     <div className="quote-row"><label>Service type</label><span>{service}</span></div>
                 </div>		
             </div>
@@ -714,7 +723,7 @@ if(currentStep ===4 ){
         <div className="quote-box">
             <h2>Your quote so far...</h2>
             <div className="quote-row"><label>Postcode</label><span>{postcode}</span></div>
-            <div className="quote-row"><label>Service date</label><span>{servicedate}</span></div>
+            <div className="quote-row"><label>Service date</label><span>{sdate}</span></div>
             <div className="quote-row"><label>Service type</label><span>{service}</span></div>
         </div>		
     </div>
@@ -789,6 +798,7 @@ if(currentStep ===4 ){
 }
 
 if(currentStep === 5 ){
+    
     return (
         <React.Fragment>
             <Header step1={currentStep}/>
@@ -803,7 +813,7 @@ if(currentStep === 5 ){
                     <div className="quote-box">
                         <h2>Your quote details</h2>
                         <div className="quote-row"><label>Postcode</label><span>{postcode}</span></div>
-                        <div className="quote-row"><label>Service date</label><span>{servicedate}</span></div>
+                        <div className="quote-row"><label>Service date</label><span>{sdate}</span></div>
                         <div className="quote-row"><label>Service type</label><span>{service}</span></div>
                         <div className="quote-row"><label>Local expert</label><span>{service_provider_name}</span></div>
                     </div>		
@@ -834,6 +844,7 @@ if(currentStep === 5 ){
 }
 
 if(currentStep === 6){
+    
     return (
         <React.Fragment>
             <Header step1={currentStep}/>
@@ -848,7 +859,7 @@ if(currentStep === 6){
                     <div className="quote-box">
                         <h2>Your quote details</h2>
                         <div className="quote-row"><label>Postcode</label><span>{postcode}</span></div>
-                        <div className="quote-row"><label>Service date</label><span>{servicedate}</span></div>
+                        <div className="quote-row"><label>Service date</label><span>{sdate}</span></div>
                         <div className="quote-row"><label>Service type</label><span>{service}</span></div>
                     </div>		
                 </div>

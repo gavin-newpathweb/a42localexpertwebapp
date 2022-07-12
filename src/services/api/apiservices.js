@@ -42,7 +42,7 @@ export async function savewebappdata(payload){
             },
             body: payload
         }).then(results =>
-            (results.status == 200?{status:true}: [])
+            (results.status == 200?{status:true}: {status:false})
         ))
     }catch(error){
         return [];
