@@ -361,14 +361,16 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
                     <div className="form-group half-width radio-input">
                         <label>Type of service</label>
                         <div className="radio-outer">
+                            <label htmlFor="residential">
                             <input id="residential" defaultChecked={service_type==='residential'}  type="radio" value="residential" onClick={e => { setServicetype(e.target.value)}} name="service_type" />
                             <span></span>
-                            <label htmlFor="residential">Residential</label>
+                            Residential</label>
                         </div>
                         <div className="radio-outer">
+                            <label htmlFor="commercial">
                             <input id="commercial" defaultChecked={service_type==='commercial'} type="radio" value="commercial" onClick={e => { setServicetype(e.target.value)}} name="service_type" />
                             <span></span>
-                            <label htmlFor="commercial">Commercial</label>
+                            Commercial</label>
                         </div>
                         {errorMsg && <label style={{'color':'red'}}>{errorMsg.servicetype}</label>}
                     </div>	
