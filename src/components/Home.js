@@ -31,7 +31,8 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
     
     //For step1
     const [postcode, setPostcode] = React.useState('');
-    const [servicedate, setServicedate] = React.useState(cdate.toString());
+    // const [servicedate, setServicedate] = React.useState(cdate.toString());
+    const [servicedate, setServicedate] = React.useState();
     const [service_type, setServicetype] = React.useState('');
 
     //for step2
@@ -81,6 +82,7 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
 
     
     const validateStep1 = () => {
+        
         let flag = true;
         let regexpostcode = /^(0[289][0-9]{2})|([1345689][0-9]{3})|(2[0-8][0-9]{2})|(290[0-9])|(291[0-4])|(7[0-4][0-9]{2})|(7[8-9][0-9]{2})$/
         if(postcode == ''){
@@ -89,7 +91,7 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
         }else if(!regexpostcode.test(postcode)){
             setError({postcode : ErrorMsgs.firstStep.postcodeValid});
             flag = false;
-        }else if(servicedate == ''){
+        }else if(servicedate == '' || servicedate===undefined){
             setError({servicedate : ErrorMsgs.firstStep.servicedate});
             flag = false;
         }else if(service_type == ''){
@@ -397,6 +399,7 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
 
     let sdate = new Date(servicedate);
     sdate =  sdate.getDate()+'/'+((sdate.getMonth()+1) < 10 ? '0'+(sdate.getMonth()+1) : (sdate.getMonth()+1))+'/'+sdate.getFullYear();
+    
 
     if(currentStep === 1){
       
@@ -429,7 +432,7 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
                     </div>
                     <div className="form-group half-width">
                         <label>Service date</label>
-                        <input type="date" min={cdate} value={servicedate} onInput={e => { clearErrorMsg(); setServicedate(e.target.value)}}  className="form-input" name="service_date" placeholder="0000" />
+                        <input type="text"  min={cdate} value={servicedate || ''} onInput={e => { clearErrorMsg(); setServicedate(e.target.value)}}  className="form-input" name="service_date" placeholder="0000" />
                         {errorMsg && <label style={{'color':'red'}}>{errorMsg.servicedate}</label>}
                         
                     </div>
