@@ -432,7 +432,7 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
                     </div>
                     <div className="form-group half-width">
                         <label>Service date</label>
-                        <input type="text"  min={cdate} value={servicedate || ''} onInput={e => { clearErrorMsg(); setServicedate(e.target.value)}}  className="form-input" name="service_date" placeholder="0000" />
+                        <input type="date"  min={cdate} value={servicedate || ''} onInput={e => { clearErrorMsg(); setServicedate(e.target.value)}}  className="form-input" name="service_date" placeholder="0000" />
                         {errorMsg && <label style={{'color':'red'}}>{errorMsg.servicedate}</label>}
                         
                     </div>
