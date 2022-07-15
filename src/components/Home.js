@@ -324,7 +324,7 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
     }
 
     const clearAllForms = () => {
-        setPostcode(''); setServicedate(cdate.toString()); setServicetype('');
+        setPostcode(''); setServicedate(''); setServicetype('');
         setService(''); setFirstname(''); setLastname(''); setContact('');
         setEmail(''); setAdderss(''); setJobdetails(''); setServiceProvider('');
         setStarttime(''); setEndtime(''); setArrivaltime(''); setSuburb(''); setS_state('');
