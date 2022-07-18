@@ -8,7 +8,7 @@ import Footer from './Footer';
 import LoadingSpinner from './Loadingspinner'
 import {baseUrl, defaultImages, ErrorMsgs, baseUrlSave} from './constant'
 import {getAllServiceList, getAllServiceProviderList, savewebappdata} from '../services/api/apiservices'
-import {tConvert} from '../services/common/common';
+import {tConvert, dFormat} from '../services/common/common';
 import srImage from '../assets/images/user.jpg';
 import findExpertImg  from '../assets/images/find-expert.svg'
 window.$payload = {}
@@ -165,12 +165,17 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
                                 let cnvrtHour = (stime1.getUTCHours() < 10) ? '0'+stime1.getUTCHours() : stime1.getUTCHours();
                                 let cnvrtMin = (stime1.getUTCMinutes() < 10) ? '0'+stime1.getUTCMinutes() : stime1.getUTCMinutes();
                                 let cnvrtSec = (stime1.getUTCSeconds() < 10) ? '0'+stime1.getUTCSeconds() : stime1.getUTCSeconds();
+                                
+
+                                // let cnvrtdate1 = ((stime1.getUTCDate() < 10) ? '0'+stime1.getUTCDate() : stime1.getUTCDate()) +
+                                //                 '/'+(((stime1.getUTCMonth()+1) < 10) ? '0'+(stime1.getMonth()+1) : (stime1.getUTCMonth()+1)) +
+                                //                 '/'+stime1.getUTCFullYear()
 
                                 let cnvrtdate1 = ((stime1.getUTCDate() < 10) ? '0'+stime1.getUTCDate() : stime1.getUTCDate()) +
-                                                '/'+(((stime1.getUTCMonth()+1) < 10) ? '0'+(stime1.getUTCMonth()+1) : (stime1.getUTCMonth()+1)) +
-                                                '/'+stime1.getUTCFullYear()
+                                                ' '+dFormat(stime1.getUTCMonth()) +
+                                                ' '+stime1.getUTCFullYear()
                                                 
-                                let cnvrttime1 = tConvert(cnvrtHour+':'+cnvrtMin+':'+cnvrtSec);
+                                let cnvrttime1 = tConvert(cnvrtHour+':'+cnvrtMin);
 
                                 let st_time1 = cnvrtdate1+', '+cnvrttime1
 
@@ -179,19 +184,28 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
                                 let cnvrtMin2 = (stime2.getUTCMinutes() < 10) ? '0'+stime2.getUTCMinutes() : stime2.getUTCMinutes();
                                 let cnvrtSec2 = (stime2.getUTCSeconds() < 10) ? '0'+stime2.getUTCSeconds() : stime2.getUTCSeconds();
 
-                                let cnvrtdate2 = ((stime2.getUTCDate() < 10) ? '0'+stime2.getUTCDate() : stime2.getUTCDate()) +
-                                                '/'+(((stime2.getUTCMonth()+1) < 10) ? '0'+(stime2.getUTCMonth()+1) : (stime2.getUTCMonth()+1)) +
-                                                '/'+stime2.getUTCFullYear()
-                                                
-                                let cnvrttime2 = tConvert(cnvrtHour2+':'+cnvrtMin2+':'+cnvrtSec2);
+                                // let cnvrtdate2 = ((stime2.getUTCDate() < 10) ? '0'+stime2.getUTCDate() : stime2.getUTCDate()) +
+                                //                 '/'+(((stime2.getUTCMonth()+1) < 10) ? '0'+(stime2.getUTCMonth()+1) : (stime2.getUTCMonth()+1)) +
+                                //                 '/'+stime2.getUTCFullYear()
 
-                                let st_time2 = cnvrtdate2+', '+cnvrttime2
+                                let cnvrtdate2 = ((stime2.getUTCDate() < 10) ? '0'+stime2.getUTCDate() : stime2.getUTCDate()) +
+                                                ' '+dFormat(stime2.getUTCMonth()) +
+                                                ' '+stime2.getUTCFullYear()
+                                                
+                                let cnvrttime2 = tConvert(cnvrtHour2+':'+cnvrtMin2);
+                                let st_time2;
+                                if(cnvrtdate2 === cnvrtdate1){
+                                    st_time2 = cnvrtdate1+', '+cnvrttime1+' to '+cnvrttime2
+                                }else{
+                                    st_time2 = st_time1+' to '+cnvrtdate2+', '+cnvrttime2
+                                }
+                                
 
                                 getAvail[i]['serviceTime'] = [{
                                     starttime : e.StartTime,
                                     endtime : e.EndTime,
                                     arrivaltime : e.ArrivalTime,
-                                    dtime : st_time1,
+                                    dtime : st_time2,
                                     etime : st_time2
                                 }]
                             // }
@@ -204,8 +218,8 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
                             let cnvrtSec = (stime1.getUTCSeconds() < 10) ? '0'+stime1.getUTCSeconds() : stime1.getUTCSeconds();
 
                             let cnvrtdate1 = ((stime1.getUTCDate() < 10) ? '0'+stime1.getUTCDate() : stime1.getUTCDate()) +
-                                                '/'+(((stime1.getUTCMonth()+1) < 10) ? '0'+(stime1.getUTCMonth()+1) : (stime1.getUTCMonth()+1)) +
-                                                '/'+stime1.getUTCFullYear()
+                                                ' '+dFormat(stime1.getUTCMonth()) +
+                                                ' '+stime1.getUTCFullYear()
                                                 
                             let cnvrttime1 = tConvert(cnvrtHour+':'+cnvrtMin+':'+cnvrtSec);
 
@@ -217,18 +231,23 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
                                 let cnvrtSec2 = (stime2.getUTCSeconds() < 10) ? '0'+stime2.getUTCSeconds() : stime2.getUTCSeconds();
 
                                 let cnvrtdate2 = ((stime2.getUTCDate() < 10) ? '0'+stime2.getUTCDate() : stime2.getUTCDate()) +
-                                                '/'+(((stime2.getUTCMonth()+1) < 10) ? '0'+(stime2.getUTCMonth()+1) : (stime2.getUTCMonth()+1)) +
-                                                '/'+stime2.getUTCFullYear()
+                                ' '+dFormat(stime2.getUTCMonth()) +
+                                ' '+stime2.getUTCFullYear()
                                                 
                                 let cnvrttime2 = tConvert(cnvrtHour2+':'+cnvrtMin2+':'+cnvrtSec2);
 
-                                let st_time2 = cnvrtdate2+', '+cnvrttime2
+                                let st_time2;
+                                if(cnvrtdate2 === cnvrtdate1){
+                                    st_time2 = cnvrtdate1+', '+cnvrttime1+' to '+cnvrttime2
+                                }else{
+                                    st_time2 = st_time1+' to '+cnvrtdate2+', '+cnvrttime2
+                                }
 
                             getAvail[duplicate.indexOf(e.Resource.Resource.bookableresource)]['serviceTime'].push({
                                 starttime : e.StartTime,
                                 endtime : e.EndTime,
                                 arrivaltime : e.ArrivalTime,
-                                dtime : st_time1,
+                                dtime : st_time2,
                                 etime : st_time2
                             })
                             delete getAvail[i];
@@ -838,7 +857,7 @@ if(currentStep ===4 ){
                                         {'cursor':'pointer','padding':'7px','margin':'10px',backgroundColor:'#55c2b8','border':'0px',borderRadius:'7px','color':'white',fontWeight:'bold'}
                                         }
                                         type="button" id={'ser_btn'+item.Resource.Resource.bookableresource+'_'+i} onClick={() => { selectServiceProviderSlot(e.starttime+'|'+e.endtime+'|'+e.arrivaltime,item.Resource.Resource.bookableresource) }}>
-                                            {e.dtime} To {e.etime} 
+                                            {e.dtime}
                                     </button>
                                     ))}
                                 </div>
