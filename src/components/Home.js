@@ -755,18 +755,15 @@ if(currentStep ===4 ){
                                             <tr key={ind}>
                                                 
                                                 {item.serviceTime[ind].slots.map(function (item1, index1) {
-                                                    if (counts[item1.date]){
-                                                        counts[item1.date] += 1
-                                                    } else {
-                                                        counts[item1.date] = 1
-                                                    }
+                                                    
                                                 return (
-                                                    <tr key={index1}>
-                                                    <td><label>{(counts[item1.date] > 1) ? '' : moment(item1.date,"YYYY-MM-DD").format("DD/MM/YYYY")}</label><br/>
+                                                    <tr key={index1}> 
+                                                    <td><label>{moment(item1.date,"YYYY-MM-DD").format("DD/MM/YYYY")}</label>
                                                         {item1.time.map((sele,sind)=>{
                                                             let spl1 = sele.split(' to ');
                                                             return(
                                                                 
+                                                                (sind%6==0) ? <br/> : 
                                                                 <button key={sind} style={ startTime == moment(item1.date+' '+sele,"YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DDTHH:mm:ss")+'Z' &&
                                                                          service_provider == item.Resource.Resource.bookableresource ? 
                                                                         {'cursor':'pointer','padding':'7px','margin':'10px','background':'#0054A6','border':'0px solid #0054A6',borderRadius:'7px','color':'white',fontWeight:'bold'} :
@@ -790,6 +787,7 @@ if(currentStep ===4 ){
                                                 })}
                                             </tr>
                                             );
+                                            
                                         })}
                                         </tbody>
                                     </table>
