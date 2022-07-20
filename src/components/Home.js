@@ -758,7 +758,8 @@ if(currentStep ===4 ){
                                                     
                                                 return (
                                                     <tr key={index1}> 
-                                                    <td><label>{moment(item1.date,"YYYY-MM-DD").format("DD/MM/YYYY")}</label>
+                                                    <td>
+                                                        {/* <label>{moment(item1.date,"YYYY-MM-DD").format("DD/MM/YYYY")}</label> */}
                                                         {item1.time.map((sele,sind)=>{
                                                             let spl1 = sele.split(' to ');
                                                             return(
