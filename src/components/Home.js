@@ -8,14 +8,27 @@ import Footer from './Footer';
 import LoadingSpinner from './Loadingspinner'
 import {baseUrl, defaultImages, ErrorMsgs, baseUrlSave} from './constant'
 import {getAllServiceList, getAllServiceProviderList, savewebappdata} from '../services/api/apiservices'
-import {tConvert, dFormat} from '../services/common/common';
+import {tConvert, dFormat, sampleJson, FilterServiceProviderList, SplitTimeSlots} from '../services/common/common';
 import srImage from '../assets/images/user.jpg';
 import findExpertImg  from '../assets/images/find-expert.svg'
+import Moment from 'react-moment';
+import 'moment-timezone';
+import moment from 'moment';
 window.$payload = {}
 function Home() {
 
     // let date1 = new Date('2022-07-13T00:00:00Z');
     // console.log(tConvert('0'+date1.getUTCHours()+':0'+date1.getUTCMinutes()+':0'+date1.getUTCSeconds()));
+    let sJson = sampleJson();
+    let timesl = SplitTimeSlots('2022-07-20T00:00:00Z','2022-07-21T00:00:00Z');
+    // console.log(timesl);
+    // var d = new Date('2022-07-19T07:00:00');
+    // var n = new Date(d.toISOString());
+    // console.log(d.toLocaleString('en-AU', { timeZone: 'Australia/Melbourne' }));
+    // console.log('filtered_Resource ',FilterServiceProviderList(sJson));
+    
+
+
    
   
 const currentDate = new Date();
@@ -132,130 +145,10 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
         }else{
             setIsLoaded(false)
             let sdata = resp.data;
-            if(sdata && sdata.TimeSlots && sdata.TimeSlots.length > 0){
-                
-                // setItems(data.TimeSlots);
-                let cnt = 0
-                let getAvail = []
-                let grouping = [];
-                
-                if(sdata.TimeSlots.length > 0){
-                    sdata.TimeSlots.map((e,i) => {
-                        if(e.Type===0){
-                            cnt = cnt+1;
-                            getAvail.push(e);
-                        }
-                    });
-                }
-                
-                if(getAvail.length > 0){
-                    
-                   
-                    let duplicate = [];
-                    getAvail.map((e,i) => {
-
-                        
-
-                        
-                        if(duplicate.indexOf(e.Resource.Resource.bookableresource) ===-1){
-                            duplicate.push(e.Resource.Resource.bookableresource);
-                            // if(duplicate.length>0){
-
-                                let stime1 = new Date(e.StartTime)
-                                let cnvrtHour = (stime1.getUTCHours() < 10) ? '0'+stime1.getUTCHours() : stime1.getUTCHours();
-                                let cnvrtMin = (stime1.getUTCMinutes() < 10) ? '0'+stime1.getUTCMinutes() : stime1.getUTCMinutes();
-                                let cnvrtSec = (stime1.getUTCSeconds() < 10) ? '0'+stime1.getUTCSeconds() : stime1.getUTCSeconds();
-                                
-
-                                // let cnvrtdate1 = ((stime1.getUTCDate() < 10) ? '0'+stime1.getUTCDate() : stime1.getUTCDate()) +
-                                //                 '/'+(((stime1.getUTCMonth()+1) < 10) ? '0'+(stime1.getMonth()+1) : (stime1.getUTCMonth()+1)) +
-                                //                 '/'+stime1.getUTCFullYear()
-
-                                let cnvrtdate1 = ((stime1.getUTCDate() < 10) ? '0'+stime1.getUTCDate() : stime1.getUTCDate()) +
-                                                ' '+dFormat(stime1.getUTCMonth()) +
-                                                ' '+stime1.getUTCFullYear()
-                                                
-                                let cnvrttime1 = tConvert(cnvrtHour+':'+cnvrtMin);
-
-                                let st_time1 = cnvrtdate1+', '+cnvrttime1
-
-                                let stime2 = new Date(e.EndTime)
-                                let cnvrtHour2 = (stime2.getUTCHours() < 10) ? '0'+stime2.getUTCHours() : stime2.getUTCHours();
-                                let cnvrtMin2 = (stime2.getUTCMinutes() < 10) ? '0'+stime2.getUTCMinutes() : stime2.getUTCMinutes();
-                                let cnvrtSec2 = (stime2.getUTCSeconds() < 10) ? '0'+stime2.getUTCSeconds() : stime2.getUTCSeconds();
-
-                                // let cnvrtdate2 = ((stime2.getUTCDate() < 10) ? '0'+stime2.getUTCDate() : stime2.getUTCDate()) +
-                                //                 '/'+(((stime2.getUTCMonth()+1) < 10) ? '0'+(stime2.getUTCMonth()+1) : (stime2.getUTCMonth()+1)) +
-                                //                 '/'+stime2.getUTCFullYear()
-
-                                let cnvrtdate2 = ((stime2.getUTCDate() < 10) ? '0'+stime2.getUTCDate() : stime2.getUTCDate()) +
-                                                ' '+dFormat(stime2.getUTCMonth()) +
-                                                ' '+stime2.getUTCFullYear()
-                                                
-                                let cnvrttime2 = tConvert(cnvrtHour2+':'+cnvrtMin2);
-                                let st_time2;
-                                if(cnvrtdate2 === cnvrtdate1){
-                                    st_time2 = cnvrtdate1+', '+cnvrttime1+' to '+cnvrttime2
-                                }else{
-                                    st_time2 = st_time1+' to '+cnvrtdate2+', '+cnvrttime2
-                                }
-                                
-
-                                getAvail[i]['serviceTime'] = [{
-                                    starttime : e.StartTime,
-                                    endtime : e.EndTime,
-                                    arrivaltime : e.ArrivalTime,
-                                    dtime : st_time2,
-                                    etime : st_time2
-                                }]
-                            // }
-                            
-                        }else{
-
-                            let stime1 = new Date(e.StartTime)
-                            let cnvrtHour = (stime1.getUTCHours() < 10) ? '0'+stime1.getUTCHours() : stime1.getUTCHours();
-                            let cnvrtMin = (stime1.getUTCMinutes() < 10) ? '0'+stime1.getUTCMinutes() : stime1.getUTCMinutes();
-                            let cnvrtSec = (stime1.getUTCSeconds() < 10) ? '0'+stime1.getUTCSeconds() : stime1.getUTCSeconds();
-
-                            let cnvrtdate1 = ((stime1.getUTCDate() < 10) ? '0'+stime1.getUTCDate() : stime1.getUTCDate()) +
-                                                ' '+dFormat(stime1.getUTCMonth()) +
-                                                ' '+stime1.getUTCFullYear()
-                                                
-                            let cnvrttime1 = tConvert(cnvrtHour+':'+cnvrtMin+':'+cnvrtSec);
-
-                            let st_time1 = cnvrtdate1+', '+cnvrttime1
-                            
-                            let stime2 = new Date(e.EndTime)
-                                let cnvrtHour2 = (stime2.getUTCHours() < 10) ? '0'+stime2.getUTCHours() : stime2.getUTCHours();
-                                let cnvrtMin2 = (stime2.getUTCMinutes() < 10) ? '0'+stime2.getUTCMinutes() : stime2.getUTCMinutes();
-                                let cnvrtSec2 = (stime2.getUTCSeconds() < 10) ? '0'+stime2.getUTCSeconds() : stime2.getUTCSeconds();
-
-                                let cnvrtdate2 = ((stime2.getUTCDate() < 10) ? '0'+stime2.getUTCDate() : stime2.getUTCDate()) +
-                                ' '+dFormat(stime2.getUTCMonth()) +
-                                ' '+stime2.getUTCFullYear()
-                                                
-                                let cnvrttime2 = tConvert(cnvrtHour2+':'+cnvrtMin2+':'+cnvrtSec2);
-
-                                let st_time2;
-                                if(cnvrtdate2 === cnvrtdate1){
-                                    st_time2 = cnvrtdate1+', '+cnvrttime1+' to '+cnvrttime2
-                                }else{
-                                    st_time2 = st_time1+' to '+cnvrtdate2+', '+cnvrttime2
-                                }
-
-                            getAvail[duplicate.indexOf(e.Resource.Resource.bookableresource)]['serviceTime'].push({
-                                starttime : e.StartTime,
-                                endtime : e.EndTime,
-                                arrivaltime : e.ArrivalTime,
-                                dtime : st_time2,
-                                etime : st_time2
-                            })
-                            delete getAvail[i];
-                        }
-                    })
-
-                    
-                    setItems(getAvail);
+            if(sdata && sdata.FilteredResource && sdata.FilteredResource.length > 0){
+                let filteredRes = FilterServiceProviderList(sdata);
+                if(filteredRes.length > 0){
+                    setItems(filteredRes);
                     setIsLoaded(false);
                     gotoNext(4);
                 }else{
@@ -375,17 +268,24 @@ let cdate = currentDate.getFullYear()+'-'+((currentDate.getMonth()+1) < 10 ? '0'
         }
     }
 
-    const selectServiceProviderSlot = (timeslot,Id) => {
-        let t = timeslot.split('|');
-        window.$payload['StartTime'] = t[0];
-        window.$payload['Endtime'] = t[1];
-        window.$payload['ArrivalTime'] = t[2];
-        setStarttime(t[0]);
-        setEndtime(t[1]);
-        setArrivaltime(t[2]);
+    const selectServiceProviderSlot = (date,from,to,arr,Id) => {
+        let fromtime = date+'T'+moment(from, "hh:mm:ss").format("HH:mm:ss")+'Z';
+        let endtime = date+'T'+moment(to, "hh:mm:ss").format("HH:mm:ss")+'Z';
+
+        // let t = timeslot.split('|');
+        // let t1 = t[0].split(' to ');
+        // console.log(t1);
+        window.$payload['StartTime'] = fromtime;
+        window.$payload['Endtime'] = endtime;
+        window.$payload['ArrivalTime'] = arr;
+        setStarttime(fromtime);
+        setEndtime(endtime);
+        setArrivaltime(arr);
         setServiceProvider(Id); 
         window.$payload['resourceid'] = Id;
         window.$payload['resource_selected'] = true;
+        console.log(window.$payload);
+        
        
         // gotoNext(5); 
         // submitData(5)
@@ -844,22 +744,46 @@ if(currentStep ===4 ){
                         item.serviceTime.length > 0 ? 
                                 
                                 <div>Pick time slots<br/>
-                                    {item.serviceTime.map((e,i) => (
-                                        
-                                    // let d1 = new Date(e.starttime)
-                                    // let e1 = new Date(e.endtime);    
-                                    // console.log('Start------------| ',d1.toLocaleString('en-AU'));
-                                    // console.log('End------------| ',e1.toLocaleString('en-AU'));
-                                    // console.log(item.Resource.Resource.bookableresource,'=====================')
-                                    
-                                    <button key={i} style={startTime == e.starttime && service_provider ==item.Resource.Resource.bookableresource ? 
-                                        {'cursor':'pointer','padding':'7px','margin':'10px','background':'#0054A6','border':'0px solid #0054A6',borderRadius:'7px','color':'white',fontWeight:'bold'} :
-                                        {'cursor':'pointer','padding':'7px','margin':'10px',backgroundColor:'#55c2b8','border':'0px',borderRadius:'7px','color':'white',fontWeight:'bold'}
-                                        }
-                                        type="button" id={'ser_btn'+item.Resource.Resource.bookableresource+'_'+i} onClick={() => { selectServiceProviderSlot(e.starttime+'|'+e.endtime+'|'+e.arrivaltime,item.Resource.Resource.bookableresource) }}>
-                                            {e.dtime}
-                                    </button>
-                                    ))}
+                                   <table className="table">
+                                        <tbody>
+                                        {Object.keys(item.serviceTime).map(function (servs, ind) {
+                                            return (
+                                            <tr key={ind}>
+                                                
+                                                {item.serviceTime[ind].slots.map(function (item1, index1) {
+                                                return (
+                                                    <tr key={index1}>
+                                                    <td><label >{moment(item1.date,"YYYY-MM-DD").format("DD/MM/YYYY")}</label><br/>
+                                                        {item1.time.map((sele,sind)=>{
+                                                            let spl1 = sele.split(' to ');
+                                                            return(
+                                                                
+                                                                <button key={sind} style={ startTime == moment(item1.date+' '+sele,"YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DDTHH:mm:ss")+'Z' &&
+                                                                         service_provider == item.Resource.Resource.bookableresource ? 
+                                                                        {'cursor':'pointer','padding':'7px','margin':'10px','background':'#0054A6','border':'0px solid #0054A6',borderRadius:'7px','color':'white',fontWeight:'bold'} :
+                                                                        {'cursor':'pointer','padding':'7px','margin':'10px',backgroundColor:'#55c2b8','border':'0px',borderRadius:'7px','color':'white',fontWeight:'bold'}
+                                                                        }
+                                                                        type="button" id={'ser_btn'+item.Resource.Resource.bookableresource+'_'+sind} onClick={() => {
+                                                                            selectServiceProviderSlot(item1.date,
+                                                                                moment(spl1[0], "hh:mm").format("HH:mm"),
+                                                                                moment(spl1[1], "hh:mm").format("HH:mm"),
+                                                                                item.serviceTime[ind].arrivaltime,item.Resource.Resource.bookableresource)
+                                                                        }} >
+                                                                {/* {moment(item1.date+' '+sele,"YYYY-MM-DD hh:mm:ss").format("YYYY-MM-DDThh:mm:ss")+'Z to '+moment(item1.date+' '+item1.time[sind+1],"YYYY-MM-DD hh:mm:ss").format("YYYY-MM-DDThh:mm:ss")+'Z'}             */}
+                                                                {moment(spl1[0], "HH:mm a").format("hh:mm a")+' to '+moment(spl1[1], "HH:mm a").format("hh:mm a")}            
+                                                                </button>
+                                                            )
+                                                        })}
+                                                    </td>
+                                                    </tr>
+                                                    
+                                                );
+                                                })}
+                                            </tr>
+                                            );
+                                        })}
+                                        </tbody>
+                                    </table>
                                 </div>
                                 
                         : <div></div>
