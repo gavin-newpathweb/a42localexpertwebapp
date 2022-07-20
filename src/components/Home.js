@@ -696,7 +696,7 @@ if(currentStep ===4 ){
             </React.Fragment>
         );
     }else {
-        
+        let counts = {}
         return (
         <React.Fragment>
         <Header step1={currentStep}/>
@@ -746,14 +746,23 @@ if(currentStep ===4 ){
                                 <div>Pick time slots<br/>
                                    <table className="table">
                                         <tbody>
-                                        {Object.keys(item.serviceTime).map(function (servs, ind) {
+                                        {
+                                        
+                                        Object.keys(item.serviceTime).map(function (servs, ind) {
+                                            
                                             return (
+                                                
                                             <tr key={ind}>
                                                 
                                                 {item.serviceTime[ind].slots.map(function (item1, index1) {
+                                                    if (counts[item1.date]){
+                                                        counts[item1.date] += 1
+                                                    } else {
+                                                        counts[item1.date] = 1
+                                                    }
                                                 return (
                                                     <tr key={index1}>
-                                                    <td><label >{moment(item1.date,"YYYY-MM-DD").format("DD/MM/YYYY")}</label><br/>
+                                                    <td><label>{(counts[item1.date] > 1) ? '' : moment(item1.date,"YYYY-MM-DD").format("DD/MM/YYYY")}</label><br/>
                                                         {item1.time.map((sele,sind)=>{
                                                             let spl1 = sele.split(' to ');
                                                             return(
